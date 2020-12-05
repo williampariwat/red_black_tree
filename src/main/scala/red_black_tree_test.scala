@@ -4,7 +4,7 @@ object red_black_tree_test extends App{
     brt.insert(2)
     brt.insert(4)
     brt.insert(6)
-    brt.insert(5)
+//    brt.insert(5)
 //    brt.insert(7)
 //    brt.insert(9)
 //    brt.insert(8)
@@ -19,11 +19,14 @@ object red_black_tree_test extends App{
     println(brt.searchTree(11))
     println(brt.searchTree(14))
 
-
+    println("Height: "+ brt.heightCPS(brt.root))
+//    assert(brt.heightCPS(brt.root) == 8)
+    //Testing the height function for String type BST
 
     (brt.printTree())
+    println("Height of black: "+brt.blackHeight(brt.root))
+    println("Size: " + brt.size(brt.root))
     println(brt.sortedArray())
-
 
 
 }

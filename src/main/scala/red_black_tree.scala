@@ -57,6 +57,26 @@ class red_black_tree[T] (implicit ctx:Ordering[T]) {
     case Node(color, left, value, right) => Node(color, left, value, right)
   }
 
+  def heightCPS(tree: Tree[T]): Int = { //This is how we calculate the height
+    def findHeight(tree: Tree[T]): Int = tree match {
+      case Leaf() => 1 //
+      case Node(_,l, v, r) => Seq(findHeight(l), findHeight(r)).max + 1
+      case _ => 0
+    }
+    findHeight(root) - 1
+  }
+  //Size of the tree
+  def size(t: Tree[T]) : BigInt = (t match {
+    case Leaf() => BigInt(0)
+    case Node(_, l, v, r) => size(l) + 1 + size(r)
+  })ensuring(_ >= 0)
+
+  //Function for counting height of black
+  def blackHeight(t : Tree[T]) : Int = t match {
+  case Leaf() => 1
+  case Node(Black(), l, _, _) => blackHeight(l) + 1
+  case Node(Red(), l, _, _) => blackHeight(l)
+}
   //This function search for input value and given tree
   def searchTree(value: T): Boolean = {
     def helper(value: T, tree: Tree[T]): Boolean = tree match {
@@ -68,6 +88,8 @@ class red_black_tree[T] (implicit ctx:Ordering[T]) {
     }
     helper(value, root)
   }
+
+
 
   //This function shows how red_black tree is printed
   def printTree(): Unit = {
@@ -82,13 +104,13 @@ class red_black_tree[T] (implicit ctx:Ordering[T]) {
 
   def sortedArray(): List[T] = {
     //This is a tree traversal for red_black_tree
+    //We will append array accordingly
     @tailrec
     def helper(tree: Tree[T], lst: List[T]): List[T] =
       tree match {
         case Node(_, Leaf(), v, Leaf()) => helper(Leaf(), v::lst)
         case Node(_, Leaf(), v, r) => helper(r,  v :: lst)
         case Node(_, Node(_, Leaf(), value ,Leaf()), v, r) => helper(r,v:: value::lst)
-        // rebuild branch to a simpler problem
         case Node(_, Node(_, left, value, right), v, r) => helper(Node(Red(), left, value, Node(Red(), right, v, r)), lst)
         case Leaf() => lst
       }
