@@ -4,7 +4,7 @@ object red_black_tree_test extends App{
     brt.insert(2)
     brt.insert(4)
     brt.insert(6)
-//    brt.insert(5)
+    brt.insert(5)
 //    brt.insert(7)
 //    brt.insert(9)
 //    brt.insert(8)

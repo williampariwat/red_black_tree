@@ -22,17 +22,26 @@ class red_black_tree[T] (implicit ctx:Ordering[T]) {
     this.root = insertCPS(value, root)
   }
 
-  //We need Ordering trait here to deal with subtypes of AnyVal
-  def insertCPS(value: T, t: Tree[T]): Tree[T] = t match {
-    //So there are 4 cases
-    //First case is for empty root node
-    //The rest is comparing values recursivelt until it reaches the bottom leaf
-    //Then we insert node there but we have to keep everything in preserved in Black_Red
-    case Leaf() => new Node[T](Red(), Leaf(), value, Leaf())
-    case Node(color, left, v, right) if (ctx.lt(value, v)) => preserveRedBlack(Node(color, insertCPS(value, left), v, right))
-    case Node(color, left, v, right) if (ctx.gt(value, v)) => preserveRedBlack(Node(color, left, v, insertCPS(value, right)))
-    case Node(color, left, v, right) if (ctx.equiv(value, v)) => preserveRedBlack(Node(color, left, v, right))
+  def blackBalanced(t : Tree[T]) : Boolean = t match {
+    case Node(_,l,_,r) => blackBalanced(l) && blackBalanced(r) && blackHeight(l) == blackHeight(r)
+    case Leaf() => true
   }
+
+  //We need Ordering trait here to deal with subtypes of AnyVal
+  def insertCPS(value: T, t: Tree[T]): Tree[T] = {
+    t match {
+      //So there are 4 cases
+      //First case is for empty root node
+      //The rest is comparing values recursively until it reaches the bottom leaf
+      //Then we insert node there but we have to keep everything in preserved in Black_Red
+      case Leaf() => new Node[T](Red(), Leaf(), value, Leaf())
+      case Node(color, left, v, right) if (ctx.lt(value, v)) => preserveRedBlack(Node(color, insertCPS(value, left), v, right))
+      case Node(color, left, v, right) if (ctx.gt(value, v)) => preserveRedBlack(Node(color, left, v, insertCPS(value, right)))
+      case Node(color, left, v, right) if (ctx.equiv(value, v)) => preserveRedBlack(Node(color, left, v, right))
+    }
+  }
+
+
 
   def preserveRedBlack(node: Node[T]): Node[T] = node match {
     //Since in black_red trees there are rules for black and red edges therefore we have to separate these rules into
@@ -56,6 +65,7 @@ class red_black_tree[T] (implicit ctx:Ordering[T]) {
     //Fifth case
     case Node(color, left, value, right) => Node(color, left, value, right)
   }
+
 
   def heightCPS(tree: Tree[T]): Int = { //This is how we calculate the height
     def findHeight(tree: Tree[T]): Int = tree match {
