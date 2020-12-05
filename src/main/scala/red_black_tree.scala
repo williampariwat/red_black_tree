@@ -1,4 +1,6 @@
 import java.awt.Color
+//Project : Red Black Tree
+//Pariwt Huang 6180067
 
 import scala.annotation.tailrec
 class red_black_tree[T] (implicit ctx:Ordering[T]) {
@@ -99,18 +101,25 @@ class red_black_tree[T] (implicit ctx:Ordering[T]) {
     helper(value, root)
   }
 
-
-
   //This function shows how red_black tree is printed
   def printTree(): Unit = {
     //Helper function for printing process
     def helper(spacing: String, direction: String, tree: Tree[T]): String = tree match {
       case Leaf() => ("\n")
-      case Node(color, left, value, right) => ( "(" + direction.toUpperCase + ": " + color + " : " + value + "\n" + spacing + "+ " + helper("  " + spacing, "left", left) + spacing + "+ " + helper("  " + spacing, "right", right))
+      case Node(color, left, value, right) => ( "{" + direction.toUpperCase + ": " + color + "} : " + value + "\n" + spacing + "-> " + helper("  " + spacing, "left", left) + spacing + "-> " + helper("  " + spacing, "right", right))
     }
 
     println(helper("", "root", root))
   }
+
+  def Balanced(t: Tree[T]): Boolean = t match {
+    // Return true or false whether given tree is balanced or not
+    case Leaf() => true
+    case Node(c,l,k,r) =>
+      // Tree is balanced if every path has the same number of black nodes
+      Balanced(l) && Balanced(r) && blackHeight(l) == blackHeight(r)
+  }
+
 
   def sortedArray(): List[T] = {
     //This is a tree traversal for red_black_tree
@@ -127,4 +136,16 @@ class red_black_tree[T] (implicit ctx:Ordering[T]) {
 
     helper(root, List[T]()).reverse
   }
+
+  //This feature is for converting list of T's to Red Black tree
+  def listToTree(lst : List[T]): Tree[T] ={
+    def helper(lst: List[T],result: Tree[T]): Tree[T] ={
+      if(lst.isEmpty) result
+      else helper(lst.tail,insertCPS(lst.head,result))
+    }
+    helper(lst,Leaf())
+  }
+
+
+
 }
