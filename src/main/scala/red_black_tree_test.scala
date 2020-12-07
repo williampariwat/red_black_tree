@@ -33,6 +33,7 @@ object red_black_tree_test extends App{
     val brt_1 = new red_black_tree[Int]
     brt_1.root = brt_1.listToTree((List(10,7,3,3,2,4,5,4,3,41,23,21,38,59,24,76,50,36,17)))
     assert(brt_1.Balanced(brt_1.root) == true)
+    assert(brt_1.blackHeight(brt_1.root) == 1);
     brt_1.printTree()
     assert(brt_1.size(brt_1.root) == 16)
     assert(brt_1.heightCPS(brt_1.root) == 6)
@@ -43,6 +44,9 @@ object red_black_tree_test extends App{
 
     val brt_2 = new red_black_tree[String]
     brt_2.root = brt_2.listToTree(List("f","b","a","d","e","t"))
+    assert( brt_2.blackHeight(brt_2.root) == 1);
+
+    assert(brt_2.blackBalanced(brt_2.root) == true)
     assert(brt_2.Balanced(brt_2.root) == true)
     assert(brt_2.size(brt_2.root) == 6)
     assert(brt_2.heightCPS(brt_2.root) == 4)
@@ -55,6 +59,9 @@ object red_black_tree_test extends App{
 
     val brt_3 = new red_black_tree[Double]
     brt_3.root = brt_3.listToTree(List(3.2,3.2,4.3,4.2,8.9,7.6,23.0,43.1))
+    assert( brt_3.blackHeight(brt_3.root) == 1);
+
+    assert(brt_3.blackBalanced(brt_3.root) == true)
     assert(brt_3.Balanced(brt_3.root) == true)
     assert(brt_3.size(brt_3.root) == 7)
     assert(brt_3.heightCPS(brt_3.root) == 5)
@@ -65,7 +72,12 @@ object red_black_tree_test extends App{
     //Test case 5 String
 
     val brt_4 = new red_black_tree[String]
+
     brt_4.root = brt_4.listToTree(List("hi","my","name","is","William","6180067"))
+    println("Height: " + brt_4.blackHeight(brt_4.root));
+
+    assert(brt_4.blackBalanced(brt_4.root) == true)
+
     assert(brt_4.Balanced(brt_4.root) == true)
     assert(brt_4.size(brt_4.root)==6)
     assert(brt_4.heightCPS(brt_4.root)==3)
@@ -74,8 +86,14 @@ object red_black_tree_test extends App{
 
     println("------------------------------------------------------------------------")
     //Test case 6 Char
+
     val brt_5 = new red_black_tree[Char]
+
     brt_5.root = brt_5.listToTree(List('9', ':','!', '"','#', '$'))
+    assert( brt_5.blackHeight(brt_5.root) == 1);
+
+    assert(brt_5.blackBalanced(brt_5.root) == true)
+
     assert(brt_5.Balanced(brt_5.root) == true)
     assert(brt_5.size(brt_5.root)==6)
     assert(brt_5.heightCPS(brt_5.root) == 5)
