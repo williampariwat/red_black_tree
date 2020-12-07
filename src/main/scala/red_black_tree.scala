@@ -44,7 +44,6 @@ class red_black_tree[T] (implicit ctx:Ordering[T]) {
   }
 
 
-
   def preserveRedBlack(node: Node[T]): Node[T] = node match {
     //Since in black_red trees there are rules for black and red edges therefore we have to separate these rules into
     // 5 cases
